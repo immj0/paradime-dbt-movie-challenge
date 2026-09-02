@@ -1,0 +1,22 @@
+version: 2
+models:
+  - name: dwh_movie_production_companies
+    columns:
+      - name: production_company
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: is_top_production_company
+        description: ""
+        meta:
+          dimension:
+            type: boolean
+      - name: imdb_id
+        description: ""
+        meta:
+          dimension:
+            type: string
+          metrics:
+            total_movie_count:
+              type: count_distinct

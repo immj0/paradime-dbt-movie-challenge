@@ -1,6 +1,11 @@
-WITH source AS (
+WITH src AS (
     SELECT 
-        IMDB_ID,
+        case 
+            when IMDB_ID = '' 
+                then NULL
+            else 
+                IMDB_ID
+        end as IMDB_ID,
         TITLE,
         DIRECTOR,
         WRITER,
@@ -27,9 +32,29 @@ WITH source AS (
         TMDB_ID
     FROM 
         {{ source('PARADIME_MOVIE_CHALLENGE', 'OMDB_MOVIES') }}
+),
+
+deduplicated as (
+    SELECT 
+        *,
+        ROW_NUMBER() OVER (
+            PARTITION BY imdb_id, tmdb_id
+            ORDER BY title
+        ) as imdb_tmdb_id_row_no,
+        ROW_NUMBER() OVER (
+            PARTITION BY title, released_date
+            ORDER BY imdb_id
+        ) as title_release_date_row_no
+    FROM
+        src
+    WHERE 
+        title NOT LIKE '%#DUPE%'
+    QUALIFY 
+        imdb_tmdb_id_row_no = 1
+        AND title_release_date_row_no = 1
 )
 
 SELECT 
     * 
 FROM 
-    source
+    deduplicated

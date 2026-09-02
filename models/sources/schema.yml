@@ -126,6 +126,16 @@ models:
         meta:
           dimension:
             type: string
+      - name: imdb_tmdb_id_row_no
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: title_release_date_row_no
+        description: ""
+        meta:
+          dimension:
+            type: number
   - name: stg_omdb_movies
     columns:
       - name: imdb_id
@@ -253,6 +263,16 @@ models:
         meta:
           dimension:
             type: number
+      - name: imdb_tmdb_id_row_no
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: title_release_date_row_no
+        description: ""
+        meta:
+          dimension:
+            type: number
   - name: stg_tmdb_tv_series
     columns:
       - name: id
@@ -291,7 +311,9 @@ models:
           dimension:
             type: string
       - name: status
-        description: Current status of the TV show (e.g., returning series, ended, cancelled, etc.).
+        description: >-
+          Current status of the TV show (e.g., returning series, ended,
+          cancelled, etc.).
         meta:
           dimension:
             type: string
